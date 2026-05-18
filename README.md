@@ -30,3 +30,13 @@
 
 </ul>
 
+<hr>
+
+The dashboard is up and running!!! <a href="https://debanjansarkar.github.io/govt_exams_dashboard/" target="_blank"> Click here to have a look! </a>
+
+<hr>
+
+<h3>Made with ❤️ by Debanjan Sarkar.
+
+<hr>
+<hr>

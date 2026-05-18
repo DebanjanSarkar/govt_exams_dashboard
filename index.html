@@ -25,6 +25,11 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;}
 
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
 /* ── HEADER ── */
 .header{background:var(--surface);border-bottom:1px solid var(--border);padding:20px 28px;display:flex;align-items:center;gap:18px;}
 .header-emblem{width:44px;height:44px;background:var(--gold-dim);border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
@@ -156,6 +161,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="stat-chip"><span class="n">8</span><span class="l">State-level<br>(WB) exams</span></div>
     <div class="stat-chip"><span class="n">4</span><span class="l">Central Govt.<br>exams</span></div>
     <div class="stat-chip"><span class="n">2</span><span class="l">Banking<br>(IBPS) exams</span></div>
+  </div>
+
+  <!-- Other Resources -->
+  <div class="stats-strip">
+    <a href="./resources/competitive_exams_visual_guide.docx" target="_blank">
+      <div class="stat-chip"><span class="n">📜</span><span class="l">Visual<br>Guide</span></div>
+    </a>
+    <a href="./resources/competitive_exams_spreadsheet.xlsx" target="_blank">
+      <div class="stat-chip"><span class="n">📊</span><span class="l">Comparison<br>Sheet</span></div>
+    </a>
   </div>
 
   <!-- Legend -->
@@ -969,6 +984,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   </div>
 
 </div><!-- /container -->
+
+<div class="header">
+  <div class="header-emblem">👩🏻‍💻</div>
+  <div class="header-text">
+    <h2>Created with ❤️ by Debanjan Sarkar</h2>
+    <p><a href="mailto:debanjanwork21@gmail.com" target="_blank">Suggest edits</a> &nbsp;·&nbsp; Happy to hear from you!</p>
+    <p>📧 debanjanwork21@gmail.com 📧</p>
+  </div>
+</div>
 
 <script>
 function toggleDetails(btn){
