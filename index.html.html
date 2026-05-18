@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Competitive Examinations – Quick Reference Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0f18;
+  --surface: #161925;
+  --surface2: #1e2235;
+  --border: #272c42;
+  --text: #e2e0ee;
+  --muted: #7e82a0;
+  --state-c: #5badff;
+  --state-dim: #122d50;
+  --central-c: #f08c3a;
+  --central-dim: #3a1e08;
+  --banking-c: #4ecb80;
+  --banking-dim: #0d2e1a;
+  --gold: #f0c84a;
+  --gold-dim: #2e2208;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;}
+
+/* ── HEADER ── */
+.header{background:var(--surface);border-bottom:1px solid var(--border);padding:20px 28px;display:flex;align-items:center;gap:18px;}
+.header-emblem{width:44px;height:44px;background:var(--gold-dim);border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+.header-text h1{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;letter-spacing:-0.01em;}
+.header-text p{color:var(--muted);font-size:0.78rem;margin-top:2px;}
+
+/* ── CONTAINER ── */
+.container{max-width:1200px;margin:0 auto;padding:28px 20px;}
+
+/* ── STAT STRIP ── */
+.stats-strip{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px;}
+.stat-chip{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 16px;display:flex;align-items:center;gap:10px;}
+.stat-chip .n{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold);}
+.stat-chip .l{color:var(--muted);font-size:0.76rem;line-height:1.3;}
+
+/* ── LEGEND ── */
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:20px;align-items:center;}
+.legend span{font-size:0.75rem;color:var(--muted);}
+.leg-item{display:flex;align-items:center;gap:6px;font-size:0.78rem;}
+.leg-dot{width:10px;height:10px;border-radius:2px;}
+
+/* ── FILTER ROW ── */
+.filter-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+.fb{padding:6px 16px;border-radius:100px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:500;cursor:pointer;transition:.2s;}
+.fb:hover{color:var(--text);border-color:var(--text);}
+.fb.all.active{background:var(--gold);border-color:var(--gold);color:#000;}
+.fb.state{border-color:var(--state-c);color:var(--state-c);}
+.fb.state.active{background:var(--state-c);color:#000;}
+.fb.central{border-color:var(--central-c);color:var(--central-c);}
+.fb.central.active{background:var(--central-c);color:#fff;}
+.fb.banking{border-color:var(--banking-c);color:var(--banking-c);}
+.fb.banking.active{background:var(--banking-c);color:#000;}
+
+/* ── VIEW TOGGLE ── */
+.view-row{display:flex;align-items:center;gap:8px;margin-bottom:22px;}
+.view-row label{color:var(--muted);font-size:0.76rem;}
+.vb{padding:5px 12px;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:0.76rem;cursor:pointer;transition:.2s;}
+.vb.active{background:var(--surface2);color:var(--text);border-color:var(--gold);}
+
+/* ── CARDS ── */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:.2s;cursor:default;}
+.card:hover{border-color:var(--border);box-shadow:0 4px 24px rgba(0,0,0,.4);}
+.card.state{border-top:3px solid var(--state-c);}
+.card.central{border-top:3px solid var(--central-c);}
+.card.banking{border-top:3px solid var(--banking-c);}
+
+.card-head{padding:14px 18px 10px;}
+.card-tag{font-size:0.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;}
+.state .card-tag{color:var(--state-c);}
+.central .card-tag{color:var(--central-c);}
+.banking .card-tag{color:var(--banking-c);}
+.card-name{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;line-height:1.25;}
+.card-role{color:var(--muted);font-size:0.76rem;margin-top:3px;line-height:1.4;}
+
+.kv-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
+.kv{background:var(--surface);padding:9px 14px;}
+.kv .k{font-size:0.66rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:2px;}
+.kv .v{font-size:0.82rem;font-weight:500;color:var(--text);line-height:1.3;}
+.kv .v.good{color:#4ecb80;}
+.kv .v.warn{color:#f08c3a;}
+
+.stages-row{padding:10px 18px;border-top:1px solid var(--border);display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+.stag{font-size:0.7rem;padding:2px 8px;border-radius:4px;font-weight:500;}
+.state .stag{background:var(--state-dim);color:var(--state-c);}
+.central .stag{background:var(--central-dim);color:var(--central-c);}
+.banking .stag{background:var(--banking-dim);color:var(--banking-c);}
+.arr{color:var(--muted);font-size:0.7rem;}
+
+.expand-btn{width:100%;padding:8px;background:transparent;border:none;border-top:1px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:0.74rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:.15s;}
+.expand-btn:hover{background:var(--surface2);color:var(--text);}
+
+.details{display:none;padding:14px 18px;border-top:1px solid var(--border);background:var(--surface2);}
+.details.open{display:block;}
+.det-sec{margin-bottom:12px;}
+.det-sec:last-child{margin-bottom:0;}
+.det-head{font-size:0.66rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:6px;font-weight:600;}
+.det-item{font-size:0.79rem;padding:2px 0;display:flex;gap:6px;line-height:1.4;}
+.det-item::before{content:"›";color:var(--gold);flex-shrink:0;}
+
+.mini-table{width:100%;border-collapse:collapse;font-size:0.75rem;margin-top:4px;}
+.mini-table th{text-align:left;padding:4px 8px;background:var(--border);color:var(--muted);font-weight:600;}
+.mini-table td{padding:4px 8px;border-bottom:1px solid var(--border);}
+.mini-table tr:last-child td{border-bottom:none;}
+
+/* ── TABLE VIEW ── */
+.table-wrap{display:none;overflow-x:auto;}
+.table-wrap.show{display:block;}
+.cmp{width:100%;border-collapse:collapse;font-size:0.78rem;}
+.cmp th{padding:9px 12px;background:var(--surface2);color:var(--muted);font-weight:600;text-align:left;border-bottom:2px solid var(--border);white-space:nowrap;font-size:0.68rem;text-transform:uppercase;letter-spacing:.07em;}
+.cmp td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.4;}
+.cmp tr:hover td{background:var(--surface);}
+.tag-s{color:var(--state-c);font-weight:600;font-size:0.7rem;}
+.tag-c{color:var(--central-c);font-weight:600;font-size:0.7rem;}
+.tag-b{color:var(--banking-c);font-weight:600;font-size:0.7rem;}
+.neg{color:#ff6b7a;font-size:0.74rem;font-weight:500;}
+.noneg{color:var(--muted);font-size:0.74rem;}
+.em{font-weight:600;}
+
+.hidden{display:none!important;}
+
+/* ── NOTE ── */
+.note{background:var(--gold-dim);border:1px solid var(--gold);border-radius:8px;padding:10px 16px;font-size:0.76rem;color:var(--gold);margin-bottom:22px;}
+
+@media(max-width:600px){
+  .cards-grid{grid-template-columns:1fr;}
+  .header{padding:14px;}
+  .container{padding:16px 12px;}
+  .header-text h1{font-size:1.1rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-emblem">🏛</div>
+  <div class="header-text">
+    <h1>Competitive Examinations — Quick Reference</h1>
+    <p>State (WB) &nbsp;·&nbsp; Central Govt. &nbsp;·&nbsp; Banking (IBPS) &nbsp;·&nbsp; 14 Exams at a glance</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Stats -->
+  <div class="stats-strip">
+    <div class="stat-chip"><span class="n">14</span><span class="l">Exams<br>covered</span></div>
+    <div class="stat-chip"><span class="n">5</span><span class="l">Conducting<br>bodies</span></div>
+    <div class="stat-chip"><span class="n">8</span><span class="l">State-level<br>(WB) exams</span></div>
+    <div class="stat-chip"><span class="n">4</span><span class="l">Central Govt.<br>exams</span></div>
+    <div class="stat-chip"><span class="n">2</span><span class="l">Banking<br>(IBPS) exams</span></div>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <span>Category:</span>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--state-c)"></div>State (WB)</div>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--central-c)"></div>Central Govt.</div>
+    <div class="leg-item"><div class="leg-dot" style="background:var(--banking-c)"></div>Banking (IBPS)</div>
+  </div>
+
+  <!-- Note -->
+  <div class="note">⚠ Data sourced from document. Pay scales and eligibility details reflect document content; verify official notifications for current figures.</div>
+
+  <!-- Filters -->
+  <div class="filter-row">
+    <button class="fb all active" onclick="filter('all',this)">All (14)</button>
+    <button class="fb state" onclick="filter('state',this)">State – WB (8)</button>
+    <button class="fb central" onclick="filter('central',this)">Central Govt. (4)</button>
+    <button class="fb banking" onclick="filter('banking',this)">Banking IBPS (2)</button>
+  </div>
+
+  <!-- View toggle -->
+  <div class="view-row">
+    <label>View as:</label>
+    <button class="vb active" id="vb-cards" onclick="setView('cards')">Cards</button>
+    <button class="vb" id="vb-table" onclick="setView('table')">Comparison Table</button>
+  </div>
+
+  <!-- ── CARDS VIEW ── -->
+  <div class="cards-grid" id="cards-view">
+
+    <!-- 1. WBPSC Clerkship -->
+    <div class="card state" data-cat="state">
+      <div class="card-head">
+        <div class="card-tag">WBPSC · State</div>
+        <div class="card-name">Clerkship Examination</div>
+        <div class="card-role">Clerical cadre – Secretariat &amp; Directorates, Govt. of WB</div>
+      </div>
+      <div class="kv-grid">
+        <div class="kv"><div class="k">Min. Qualification</div><div class="v">Not specified (Matric implied)</div></div>
+        <div class="kv"><div class="k">Age Limit</div><div class="v">As per rules</div></div>
+        <div class="kv"><div class="k">Negative Marking</div><div class="v noneg">None</div></div>
+        <div class="kv"><div class="k">Pay Scale</div><div class="v">Not specified</div></div>
+      </div>
+      <div class="stages-row">
+        <span class="stag">Preliminary (MCQ)</span>
+        <span class="arr">→</span>
+        <span class="stag">Final (3 Papers, Conv.)</span>
+      </div>
+      <button class="expand-btn" onclick="toggleDetails(this)">▼ Exam Details</button>
+      <div class="details">
+        <div class="det-sec">
+          <div class="det-head">Stage 1 – Preliminary</div>
+          <div class="det-item">Objective / MCQ type</div>
+          <div class="det-item">Held simultaneously across WB including Kolkata</div>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Stage 2 – Final Examination</div>
+          <div class="det-item">3 papers of conventional type</div>
+          <div class="det-item">Merit list based on total marks of all three Final papers</div>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">How to Apply</div>
+          <div class="det-item">www.pscwb.org.in | 161-A, S.P. Mukherjee Road, Kolkata – 700 026</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. WBPSC Special Clerkship -->
+    <div class="card state" data-cat="state">
+      <div class="card-head">
+        <div class="card-tag">WBPSC · State</div>
+        <div class="card-name">Special Clerkship Examination</div>
+        <div class="card-role">Clerical posts – District &amp; Regional Offices, Govt. of WB</div>
+      </div>
+      <div class="kv-grid">
+        <div class="kv"><div class="k">Min. Qualification</div><div class="v">Not specified</div></div>
+        <div class="kv"><div class="k">Age Limit</div><div class="v">As per rules</div></div>
+        <div class="kv"><div class="k">Negative Marking</div><div class="v noneg">None</div></div>
+        <div class="kv"><div class="k">Target Vacancies</div><div class="v">Non-PSC / Employment Exchange vacancies</div></div>
+      </div>
+      <div class="stages-row">
+        <span class="stag">Written Examination</span>
+      </div>
+      <button class="expand-btn" onclick="toggleDetails(this)">▼ Exam Details</button>
+      <div class="details">
+        <div class="det-sec">
+          <div class="det-head">Key Points</div>
+          <div class="det-item">Fills vacancies previously staffed via Employment Exchanges</div>
+          <div class="det-item">Held simultaneously in Kolkata and other district centres</div>
+          <div class="det-item">Governed by special recruitment rules for clerical posts</div>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Apply</div>
+          <div class="det-item">www.pscwb.org.in</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. WBPSC Miscellaneous Services -->
+    <div class="card state" data-cat="state">
+      <div class="card-head">
+        <div class="card-tag">WBPSC · State</div>
+        <div class="card-name">Miscellaneous Services Recruitment</div>
+        <div class="card-role">15+ posts incl. ACDPO, DMO, SI Excise, Block Welfare Officer, Auditor Co-op Societies…</div>
+      </div>
+      <div class="kv-grid">
+        <div class="kv"><div class="k">Min. Qualification</div><div class="v">Varies by post</div></div>
+        <div class="kv"><div class="k">Age Limit</div><div class="v">As per rules</div></div>
+        <div class="kv"><div class="k">Negative Marking</div><div class="v noneg">None</div></div>
+        <div class="kv"><div class="k">Total Marks</div><div class="v em">650+ marks</div></div>
+      </div>
+      <div class="stages-row">
+        <span class="stag">Prelim (200M, MCQ)</span>
+        <span class="arr">→</span>
+        <span class="stag">Final (450M, Conv.)</span>
+        <span class="arr">→</span>
+        <span class="stag">Personality Test</span>
+      </div>
+      <button class="expand-btn" onclick="toggleDetails(this)">▼ Exam Details</button>
+      <div class="details">
+        <div class="det-sec">
+          <div class="det-head">Stage 1 – Preliminary (200 marks, 1 hr 30 min)</div>
+          <div class="det-item">MCQ: General Studies – 150 marks</div>
+          <div class="det-item">MCQ: Arithmetic – 50 marks</div>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Stage 2 – Final (450 marks, Conventional)</div>
+          <table class="mini-table">
+            <tr><th>Paper</th><th>Subject</th><th>Marks</th><th>Duration</th></tr>
+            <tr><td>I</td><td>English</td><td>150</td><td>1h 30m</td></tr>
+            <tr><td>II</td><td>Bengali/Hindi/Urdu/Nepali/Santali</td><td>150</td><td>1h 30m</td></tr>
+            <tr><td>III</td><td>GS (100) + Arithmetic (50)</td><td>150</td><td>2h 30m</td></tr>
+          </table>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Stage 3 – Personality Test</div>
+          <div class="det-item">Merit = Final total + Personality Test marks combined</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. WBCS -->
+    <div class="card state" data-cat="state">
+      <div class="card-head">
+        <div class="card-tag">WBPSC · State</div>
+        <div class="card-name">WBCS (Exe.) etc. Examination</div>
+        <div class="card-role">Group A/B/C/D services – WB Civil, Police, Secretariat &amp; more</div>
+      </div>
+      <div class="kv-grid">
+        <div class="kv"><div class="k">Min. Qualification</div><div class="v">Bachelor's Degree + Bengali</div></div>
+        <div class="kv"><div class="k">Age Limit</div><div class="v">21–32 yrs (20–32 WB Police)</div></div>
+        <div class="kv"><div class="k">Negative Marking</div><div class="v noneg">None</div></div>
+        <div class="kv"><div class="k">Total Marks (Main)</div><div class="v em">1600 marks (8 papers)</div></div>
+      </div>
+      <div class="stages-row">
+        <span class="stag">Prelim (MCQ, GS)</span>
+        <span class="arr">→</span>
+        <span class="stag">Main (8 papers)</span>
+        <span class="arr">→</span>
+        <span class="stag">Personality Test</span>
+      </div>
+      <button class="expand-btn" onclick="toggleDetails(this)">▼ Exam Details</button>
+      <div class="details">
+        <div class="det-sec">
+          <div class="det-head">Stage 2 – Main Examination (6 compulsory + 1 optional subject)</div>
+          <div class="det-item">Each paper: 200 marks, 3 hours</div>
+          <div class="det-item">4 compulsory papers are MCQ (OMR): GS-I, GS-II, Constitution &amp; Economy, Arithmetic &amp; Reasoning</div>
+          <div class="det-item">2 compulsory papers are conventional: Paper I (Bengali/Hindi/Urdu/Nepali/Santali) + Paper II (English)</div>
+          <div class="det-item">Optional subject: 2 papers × 200 marks (for Group A &amp; B aspirants)</div>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Compulsory Papers at a Glance</div>
+          <table class="mini-table">
+            <tr><th>Paper</th><th>Subject</th><th>Type</th></tr>
+            <tr><td>I</td><td>Bengali/Hindi/Urdu/Nepali/Santali</td><td>Conventional</td></tr>
+            <tr><td>II</td><td>English (Letter, Précis, Composition, Translation)</td><td>Conventional</td></tr>
+            <tr><td>III</td><td>GS-I: Indian History &amp; Geography</td><td>MCQ</td></tr>
+            <tr><td>IV</td><td>GS-II: Science, Tech, Environment, Current Affairs</td><td>MCQ</td></tr>
+            <tr><td>V</td><td>Constitution of India &amp; Indian Economy / RBI</td><td>MCQ</td></tr>
+            <tr><td>VI</td><td>Arithmetic &amp; Test of Reasoning</td><td>MCQ</td></tr>
+          </table>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Apply</div>
+          <div class="det-item">www.pscwb.org.in</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. WBJS -->
+    <div class="card state" data-cat="state">
+      <div class="card-head">
+        <div class="card-tag">WBPSC · State</div>
+        <div class="card-name">WB Judicial Service Examination</div>
+        <div class="card-role">Civil Judges / Judicial Magistrates – District courts &amp; statutory bodies</div>
+      </div>
+      <div class="kv-grid">
+        <div class="kv"><div class="k">Min. Qualification</div><div class="v">Law degree (LLB implied)</div></div>
+        <div class="kv"><div class="k">Prelim Venue</div><div class="v">Kolkata &amp; Darjeeling</div></div>
+        <div class="kv"><div class="k">Negative Marking</div><div class="v noneg">None</div></div>
+        <div class="kv"><div class="k">Prelim Month</div><div class="v">August</div></div>
+      </div>
+      <div class="stages-row">
+        <span class="stag">Prelim (MCQ)</span>
+        <span class="arr">→</span>
+        <span class="stag">Final (Conv.)</span>
+        <span class="arr">→</span>
+        <span class="stag">Personality Test</span>
+      </div>
+      <button class="expand-btn" onclick="toggleDetails(this)">▼ Exam Details</button>
+      <div class="details">
+        <div class="det-sec">
+          <div class="det-head">Key Points</div>
+          <div class="det-item">Three successive stages: Preliminary → Final → Personality Test</div>
+          <div class="det-item">Preliminary: Multiple Choice Objective Type</div>
+          <div class="det-item">Final: Conventional Type (written)</div>
+          <div class="det-item">Hill tribe/Darjeeling sub-division candidates may appear at Darjeeling centre</div>
+          <div class="det-item">Low vision candidates (including Darjeeling residents requiring scribe): Kolkata centre only</div>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Apply</div>
+          <div class="det-item">www.pscwb.org.in</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. WBA&AS -->
+    <div class="card state" data-cat="state">
+      <div class="card-head">
+        <div class="card-tag">WBPSC · State</div>
+        <div class="card-name">WB Audit &amp; Accounts Service</div>
+        <div class="card-role">Accounts Officers – State government audit &amp; accounts departments</div>
+      </div>
+      <div class="kv-grid">
+        <div class="kv"><div class="k">Min. Qualification</div><div class="v">B.Com / CA / ICWA + Bengali</div></div>
+        <div class="kv"><div class="k">Age Limit</div><div class="v">≤ 32 years</div></div>
+        <div class="kv"><div class="k">Pay Scale</div><div class="v em good">₹8,000 – ₹13,500 + allowances</div></div>
+        <div class="kv"><div class="k">Application Fee</div><div class="v">₹200 (nil SC/ST/PWD)</div></div>
+      </div>
+      <div class="stages-row">
+        <span class="stag">Prelim (Obj.)</span>
+        <span class="arr">→</span>
+        <span class="stag">Main (Conv.)</span>
+        <span class="arr">→</span>
+        <span class="stag">Personality Test</span>
+      </div>
+      <button class="expand-btn" onclick="toggleDetails(this)">▼ Exam Details</button>
+      <div class="details">
+        <div class="det-sec">
+          <div class="det-head">Eligibility</div>
+          <div class="det-item">B.Com from recognised university, OR</div>
+          <div class="det-item">Membership of ICAI (CA), OR Membership of ICWAI (Cost Accountant)</div>
+          <div class="det-item">Ability to read, write and speak Bengali (except Nepali-speaking candidates from Darjeeling hills)</div>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Stages</div>
+          <div class="det-item">Stage 1: Preliminary Examination (Objective Type)</div>
+          <div class="det-item">Stage 2: Main Examination (Conventional/Written)</div>
+          <div class="det-item">Stage 3: Personality Test</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. Sub-Inspector / Sergeant -->
+    <div class="card state" data-cat="state">
+      <div class="card-head">
+        <div class="card-tag">WBPSC · State</div>
+        <div class="card-name">Sub-Inspector / Sergeant Recruitment</div>
+        <div class="card-role">SI (Unarmed/Armed) – WB Police; SI / Sergeant – Kolkata Police</div>
+      </div>
+      <div class="kv-grid">
+        <div class="kv"><div class="k">Min. Qualification</div><div class="v">Not specified</div></div>
+        <div class="kv"><div class="k">Pay Scale</div><div class="v em good">₹4,500 – ₹9,700 + allowances</div></div>
+        <div class="kv"><div class="k">Negative Marking</div><div class="v noneg">None</div></div>
+        <div class="kv"><div class="k">Female Restriction</div><div class="v warn">Not for SI (Armed) &amp; Sergeant KP</div></div>
+      </div>
+      <div class="stages-row">
+        <span class="stag">Prelim (200M)</span>
+        <span class="arr">→</span>
+        <span class="stag">Final (200M)</span>
+        <span class="arr">→</span>
+        <span class="stag">PT (30M)</span>
+      </div>
+      <button class="expand-btn" onclick="toggleDetails(this)">▼ Exam Details</button>
+      <div class="details">
+        <div class="det-sec">
+          <div class="det-head">Stage 1 – Preliminary (200 marks, 1 hr 30 min, MCQ)</div>
+          <div class="det-item">General Studies – 150 marks (75 questions)</div>
+          <div class="det-item">Arithmetic – 50 marks (25 questions)</div>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Stage 2 – Final (200 marks, all papers on same day)</div>
+          <table class="mini-table">
+            <tr><th>Paper</th><th>Subject</th><th>Marks</th><th>Duration</th></tr>
+            <tr><td>I</td><td>GS (80) + Arithmetic (20)</td><td>100</td><td>2h</td></tr>
+            <tr><td>II</td><td>English</td><td>50</td><td>1h</td></tr>
+            <tr><td>III</td><td>Bengali / Hindi / Urdu / Nepali</td><td>50</td><td>1h</td></tr>
+          </table>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Stage 3 – Personality Test</div>
+          <div class="det-item">30 marks. Limited candidates called based on Final merit</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8. WBSSC -->
+    <div class="card state" data-cat="state">
+      <div class="card-head">
+        <div class="card-tag">WBSSC · State</div>
+        <div class="card-name">School Service Commission</div>
+        <div class="card-role">Assistant Teachers – WB govt. schools (Jr. High, High, Madrasah)</div>
+      </div>
+      <div class="kv-grid">
+        <div class="kv"><div class="k">Min. Qualification</div><div class="v">Bachelor's / Hons / PG (subject-specific)</div></div>
+        <div class="kv"><div class="k">Age Limit</div><div class="v">20 – 40 years</div></div>
+        <div class="kv"><div class="k">Desirable</div><div class="v">B.T. / B.Ed. / PGBT (NCTE recognised)</div></div>
+        <div class="kv"><div class="k">Regions</div><div class="v">5 regions + Darjeeling Hills</div></div>
+      </div>
+      <div class="stages-row">
+        <span class="stag">Written Test</span>
+        <span class="arr">→</span>
+        <span class="stag">Interview / Personality Test</span>
+      </div>
+      <button class="expand-btn" onclick="toggleDetails(this)">▼ Exam Details</button>
+      <div class="details">
+        <div class="det-sec">
+          <div class="det-head">Qualification – Pass Category</div>
+          <div class="det-item">Bachelor's degree with concerned subject (≥ 300 marks at degree level) from UGC-recognized university</div>
+          <div class="det-item">Special B.A. NOT accepted</div>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Qualification – Honours / PG Category</div>
+          <div class="det-item">B.A./B.Sc. (Hons) OR Master's Degree in concerned subject from UGC-recognized university</div>
+          <div class="det-item">Biological Science: Hons / PG in Zoology, Botany, or Physiology</div>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Regions &amp; Office Locations</div>
+          <div class="det-item">Eastern: Bardhaman, Hooghly, Birbhum → Sadhanpur, Burdwan</div>
+          <div class="det-item">Northern: Murshidabad, Malda, Dinajpur, Jalpaiguri, Cooch Behar → Malda</div>
+          <div class="det-item">Southern: Kolkata, Howrah, S-24 Parganas → 84, Sarat Basu Road, Kolkata</div>
+          <div class="det-item">Western: Purulia, Bankura, Medinipur → Bankura</div>
+          <div class="det-item">South-Eastern: N-24 Parganas, Nadia → Barasat</div>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Apply</div>
+          <div class="det-item">www.westbengalssc.com</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. SSC Matric Level -->
+    <div class="card central" data-cat="central">
+      <div class="card-head">
+        <div class="card-tag">SSC · Central Govt.</div>
+        <div class="card-name">Combined Matric Level Examination</div>
+        <div class="card-role">Group B &amp; non-technical Group C posts – Central Ministries &amp; Depts.</div>
+      </div>
+      <div class="kv-grid">
+        <div class="kv"><div class="k">Min. Qualification</div><div class="v">Matriculation / 10th pass</div></div>
+        <div class="kv"><div class="k">Age Limit</div><div class="v">18 – 27 years</div></div>
+        <div class="kv"><div class="k">Negative Marking</div><div class="v noneg">None</div></div>
+        <div class="kv"><div class="k">Key Posts</div><div class="v">LDC, Stenographer Grade D</div></div>
+      </div>
+      <div class="stages-row">
+        <span class="stag">Prelim (200M, MCQ)</span>
+        <span class="arr">→</span>
+        <span class="stag">Main (Conv.)</span>
+        <span class="arr">→</span>
+        <span class="stag">Skill Test</span>
+      </div>
+      <button class="expand-btn" onclick="toggleDetails(this)">▼ Exam Details</button>
+      <div class="details">
+        <div class="det-sec">
+          <div class="det-head">Stage 1 – Preliminary (200 marks, 2 hrs, MCQ)</div>
+          <div class="det-item">Part I: General Intelligence – 100 marks</div>
+          <div class="det-item">Part II: General Awareness – 100 marks</div>
+          <div class="det-item">Questions in English and Hindi both</div>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Stage 2 – Main for LDC (Conventional)</div>
+          <table class="mini-table">
+            <tr><th>Part</th><th>Subject</th><th>Marks</th><th>Duration</th></tr>
+            <tr><td>A</td><td>General English</td><td>50</td><td>2h</td></tr>
+            <tr><td>B</td><td>General Studies</td><td>100</td><td>2h</td></tr>
+            <tr><td>C</td><td>Arithmetic</td><td>50</td><td>2h</td></tr>
+          </table>
+          <div class="det-item" style="margin-top:6px;">Skill Test: Typing test at prescribed speed (qualifying in nature)</div>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Stage 2 – Main for Stenographer Grade D (Conventional)</div>
+          <table class="mini-table">
+            <tr><th>Part</th><th>Subject</th><th>Marks</th></tr>
+            <tr><td>A</td><td>General Studies (Hindi/English)</td><td>100</td></tr>
+            <tr><td>B</td><td>Language Comprehension</td><td>100</td></tr>
+          </table>
+          <div class="det-item" style="margin-top:6px;">Shorthand Test: 300 marks – dictation at 80 wpm for 10 min; transcription in 65 min (English) or 75 min (Hindi)</div>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Apply</div>
+          <div class="det-item">www.sscer.org</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10. SSC Graduate Level -->
+    <div class="card central" data-cat="central">
+      <div class="card-head">
+        <div class="card-tag">SSC · Central Govt.</div>
+        <div class="card-name">Combined Graduate Level Examination</div>
+        <div class="card-role">Assistants, SI-CBI, Inspectors (IT/Excise/Customs), Auditors, UDCs – Central Offices</div>
+      </div>
+      <div class="kv-grid">
+        <div class="kv"><div class="k">Min. Qualification</div><div class="v">Graduate Degree</div></div>
+        <div class="kv"><div class="k">Age Limit</div><div class="v">As per post</div></div>
+        <div class="kv"><div class="k">Negative Marking</div><div class="v noneg">None stated</div></div>
+        <div class="kv"><div class="k">Key Posts</div><div class="v">Assistants (CSS, AFHQ), SI-CBI, IT/Excise/Customs Inspectors</div></div>
+      </div>
+      <div class="stages-row">
+        <span class="stag">Preliminary (MCQ)</span>
+        <span class="arr">→</span>
+        <span class="stag">Main Examination</span>
+      </div>
+      <button class="expand-btn" onclick="toggleDetails(this)">▼ Exam Details</button>
+      <div class="details">
+        <div class="det-sec">
+          <div class="det-head">Posts Covered</div>
+          <div class="det-item">Assistants Grade (Group B Non-Gazetted) – CSS, AFHQ, Railway Board, IFS(B), CVC, RDSO etc.</div>
+          <div class="det-item">Sub-Inspectors in CBI</div>
+          <div class="det-item">Inspectors: Central Excise, Income Tax, Preventive Officers (Customs), Assistant Enforcement Officers</div>
+          <div class="det-item">Divisional Accountants, Auditors, Junior Accountants, UDCs – various central depts.</div>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Stages</div>
+          <div class="det-item">Stage 1: Combined Preliminary Examination (MCQ)</div>
+          <div class="det-item">Stage 2: Main Examination (specific to post)</div>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Apply</div>
+          <div class="det-item">www.sscer.org</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 11. UPSC Civil Services -->
+    <div class="card central" data-cat="central">
+      <div class="card-head">
+        <div class="card-tag">UPSC · Central Govt.</div>
+        <div class="card-name">Civil Services Examination (CSAT)</div>
+        <div class="card-role">IAS, IPS, IFS (Foreign) + 20+ Group A &amp; B All-India &amp; Central Services</div>
+      </div>
+      <div class="kv-grid">
+        <div class="kv"><div class="k">Min. Qualification</div><div class="v">Any recognised University Degree</div></div>
+        <div class="kv"><div class="k">Age Limit</div><div class="v">21–30 (SC/ST +5, OBC +3)</div></div>
+        <div class="kv"><div class="k">Attempts</div><div class="v">4 (OBC: 7, SC/ST: unlimited)</div></div>
+        <div class="kv"><div class="k">Nationality</div><div class="v">Indian citizen (IAS/IPS); broader for others</div></div>
+      </div>
+      <div class="stages-row">
+        <span class="stag">Prelim / CSAT (MCQ)</span>
+        <span class="arr">→</span>
+        <span class="stag">Main (9 papers)</span>
+        <span class="arr">→</span>
+        <span class="stag">Interview</span>
+      </div>
+      <button class="expand-btn" onclick="toggleDetails(this)">▼ Exam Details</button>
+      <div class="details">
+        <div class="det-sec">
+          <div class="det-head">Stage 1 – Preliminary (CSAT)</div>
+          <div class="det-item">Objective / MCQ type</div>
+          <div class="det-item">Two papers: General Studies + Civil Services Aptitude Test (CSAT)</div>
+          <div class="det-item">Qualifying in nature for Main admission</div>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Stage 2 – Main Examination</div>
+          <div class="det-item">Written + Interview for final service allocation</div>
+          <div class="det-item">No changes introduced at Main stage when CSAT was introduced (2011)</div>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Key Services</div>
+          <div class="det-item">All India: IAS, IPS, IFS (Foreign)</div>
+          <div class="det-item">Group A: Revenue, Postal, Audit &amp; Accounts, Railway (multiple), Customs, CBI–DSP, CISF-AC, Defence Estate, Information, Trade</div>
+          <div class="det-item">Group B: Central Secretariat, Railway Board Secretariat, AFHQ, Customs Appraisers, DANICS, Pondicherry Civil Services</div>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Apply</div>
+          <div class="det-item">www.upsc.nic.gov.in | Dholpur House, New Delhi-110011</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 12. UPSC IFS -->
+    <div class="card central" data-cat="central">
+      <div class="card-head">
+        <div class="card-tag">UPSC · Central Govt.</div>
+        <div class="card-name">Indian Forest Service (IFS)</div>
+        <div class="card-role">All India Class-I Service – Forest protection, conservation &amp; development</div>
+      </div>
+      <div class="kv-grid">
+        <div class="kv"><div class="k">Min. Qualification</div><div class="v">BSc (specific subjects) / Agri / Forestry / Engg.</div></div>
+        <div class="kv"><div class="k">Age Limit</div><div class="v">21–30 (SC/ST +5)</div></div>
+        <div class="kv"><div class="k">Max Attempts</div><div class="v">4</div></div>
+        <div class="kv"><div class="k">Interview</div><div class="v em">300 marks</div></div>
+      </div>
+      <div class="stages-row">
+        <span class="stag">Written (5 papers, 1400M)</span>
+        <span class="arr">→</span>
+        <span class="stag">Interview (300M)</span>
+      </div>
+      <button class="expand-btn" onclick="toggleDetails(this)">▼ Exam Details</button>
+      <div class="details">
+        <div class="det-sec">
+          <div class="det-head">Eligible Degrees</div>
+          <div class="det-item">BSc with Botany, Chemistry, Geology, Mathematics, Physics, Statistics, or Zoology</div>
+          <div class="det-item">Bachelor's in Agriculture, Forestry, or Engineering</div>
+          <div class="det-item">Forbidden subject combos: Agriculture+Agri.Engg; Agriculture+Animal Husbandry; Chemistry+Chemical Engg; Maths+Statistics</div>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Written Exam Papers</div>
+          <table class="mini-table">
+            <tr><th>Paper</th><th>Subject</th><th>Marks</th></tr>
+            <tr><td>I</td><td>General English</td><td>300</td></tr>
+            <tr><td>II</td><td>General Knowledge</td><td>300</td></tr>
+            <tr><td>III–VI</td><td>2 Optional Subjects × 2 papers × 200 marks</td><td>800</td></tr>
+            <tr><td colspan="2"><strong>Total Written</strong></td><td><strong>1400</strong></td></tr>
+            <tr><td>–</td><td>Interview / Personality Test</td><td>300</td></tr>
+          </table>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Optional Subjects (choose 2)</div>
+          <div class="det-item">Agriculture, Agri Engineering, Animal Husbandry &amp; Veterinary Science, Botany, Chemistry, Chemical Engg, Civil Engg, Forestry, Geology, Mathematics, Mechanical Engg, Physics, Statistics, Zoology</div>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Notification &amp; Apply</div>
+          <div class="det-item">Employment News (January) | www.upsc.nic.gov.in</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 13. IBPS Clerk -->
+    <div class="card banking" data-cat="banking">
+      <div class="card-head">
+        <div class="card-tag">IBPS · Banking</div>
+        <div class="card-name">IBPS CWE – Clerical Cadre</div>
+        <div class="card-role">Clerks in 19 Public Sector Banks (Allahabad, Canara, PNB, BoB, SBI associate banks, etc.)</div>
+      </div>
+      <div class="kv-grid">
+        <div class="kv"><div class="k">Min. Qualification</div><div class="v">60% in Matric / 50% in HSC / Any Degree</div></div>
+        <div class="kv"><div class="k">Age Limit</div><div class="v">18–28 (SC/ST +5, OBC +3, PWD +10)</div></div>
+        <div class="kv"><div class="k">Negative Marking</div><div class="v neg">Yes – ¼ mark per wrong</div></div>
+        <div class="kv"><div class="k">Score Validity</div><div class="v">1 year from issue</div></div>
+      </div>
+      <div class="stages-row">
+        <span class="stag">CWE (250Q, 250M, 150 min)</span>
+      </div>
+      <button class="expand-btn" onclick="toggleDetails(this)">▼ Exam Details</button>
+      <div class="details">
+        <div class="det-sec">
+          <div class="det-head">CWE Structure (All objective / MCQ)</div>
+          <table class="mini-table">
+            <tr><th>#</th><th>Test</th><th>Qs</th><th>Marks</th></tr>
+            <tr><td>1</td><td>Test of Reasoning</td><td>50</td><td>50</td></tr>
+            <tr><td>2</td><td>Test of English Language</td><td>50</td><td>50</td></tr>
+            <tr><td>3</td><td>Test of Numerical Ability</td><td>50</td><td>50</td></tr>
+            <tr><td>4</td><td>General Awareness (Banking focus)</td><td>50</td><td>50</td></tr>
+            <tr><td>5</td><td>Computer Knowledge</td><td>50</td><td>50</td></tr>
+            <tr><td colspan="2"><strong>Total</strong></td><td><strong>250</strong></td><td><strong>250</strong></td></tr>
+          </table>
+          <div class="det-item" style="margin-top:6px;">Total time: 150 minutes | Tests 1,3,4,5 printed bilingually (English &amp; Hindi)</div>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Selection &amp; Score</div>
+          <div class="det-item">Must secure minimum sectional scores in each test to qualify</div>
+          <div class="det-item">Score card valid for 1 year; CWE held twice a year</div>
+          <div class="det-item">Each bank issues own notification and conducts own GD/Interview from CWE-qualified pool</div>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Relaxation for SC/ST/OBC/PWD</div>
+          <div class="det-item">Qualification: pass marks only (no 60%/50% requirement)</div>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Apply</div>
+          <div class="det-item">www.ibps.in</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 14. IBPS PO -->
+    <div class="card banking" data-cat="banking">
+      <div class="card-head">
+        <div class="card-tag">IBPS · Banking</div>
+        <div class="card-name">IBPS CWE – Probationary Officer (PO)</div>
+        <div class="card-role">PO / Management Trainee in Public Sector Banks</div>
+      </div>
+      <div class="kv-grid">
+        <div class="kv"><div class="k">Min. Qualification</div><div class="v">Any recognised Degree</div></div>
+        <div class="kv"><div class="k">Age Limit</div><div class="v">20–30 years</div></div>
+        <div class="kv"><div class="k">Negative Marking</div><div class="v neg">Yes – ¼ mark per wrong</div></div>
+        <div class="kv"><div class="k">Final Selection</div><div class="v">GD / Interview by individual banks</div></div>
+      </div>
+      <div class="stages-row">
+        <span class="stag">CWE (250M obj. + 25M desc.)</span>
+        <span class="arr">→</span>
+        <span class="stag">GD / Interview (bank-wise)</span>
+      </div>
+      <button class="expand-btn" onclick="toggleDetails(this)">▼ Exam Details</button>
+      <div class="details">
+        <div class="det-sec">
+          <div class="det-head">CWE – Objective Section (250 marks, 150 min)</div>
+          <table class="mini-table">
+            <tr><th>#</th><th>Test</th><th>Qs</th><th>Marks</th></tr>
+            <tr><td>1</td><td>Reasoning</td><td>50</td><td>50</td></tr>
+            <tr><td>2</td><td>English Language</td><td>50</td><td>50</td></tr>
+            <tr><td>3</td><td>Quantitative Aptitude</td><td>50</td><td>50</td></tr>
+            <tr><td>4</td><td>General Awareness (Banking focus)</td><td>50</td><td>50</td></tr>
+            <tr><td>5</td><td>Computer Knowledge</td><td>50</td><td>50</td></tr>
+          </table>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">CWE – Descriptive Section (25 marks, 60 min)</div>
+          <div class="det-item">Essay, Précis, Letter Writing in English</div>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Post-CWE</div>
+          <div class="det-item">Score card valid 1 year</div>
+          <div class="det-item">Each participating bank shortlists candidates independently</div>
+          <div class="det-item">Bank conducts own GD &amp; Interview for final selection</div>
+        </div>
+        <div class="det-sec">
+          <div class="det-head">Apply</div>
+          <div class="det-item">www.ibps.in</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /cards-grid -->
+
+  <!-- ── TABLE VIEW ── -->
+  <div class="table-wrap" id="table-view">
+    <table class="cmp" id="cmp-table">
+      <thead>
+        <tr>
+          <th>Exam</th>
+          <th>Body</th>
+          <th>Category</th>
+          <th>Min. Qualification</th>
+          <th>Age Limit</th>
+          <th>Stages</th>
+          <th>Total Marks</th>
+          <th>Neg. Marking</th>
+          <th>Pay Scale</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-cat="state">
+          <td><strong>Clerkship</strong></td>
+          <td>WBPSC</td>
+          <td><span class="tag-s">State WB</span></td>
+          <td>Not specified</td>
+          <td>As per rules</td>
+          <td>Prelim → Final (3 papers)</td>
+          <td>—</td>
+          <td><span class="noneg">None</span></td>
+          <td>—</td>
+        </tr>
+        <tr data-cat="state">
+          <td><strong>Special Clerkship</strong></td>
+          <td>WBPSC</td>
+          <td><span class="tag-s">State WB</span></td>
+          <td>Not specified</td>
+          <td>As per rules</td>
+          <td>Written Exam</td>
+          <td>—</td>
+          <td><span class="noneg">None</span></td>
+          <td>—</td>
+        </tr>
+        <tr data-cat="state">
+          <td><strong>Miscellaneous Services</strong></td>
+          <td>WBPSC</td>
+          <td><span class="tag-s">State WB</span></td>
+          <td>Varies by post</td>
+          <td>As per rules</td>
+          <td>Prelim → Final → PT</td>
+          <td>Prelim 200 + Final 450</td>
+          <td><span class="noneg">None</span></td>
+          <td>—</td>
+        </tr>
+        <tr data-cat="state">
+          <td><strong>WBCS (Exe.) etc.</strong></td>
+          <td>WBPSC</td>
+          <td><span class="tag-s">State WB</span></td>
+          <td>Degree + Bengali</td>
+          <td>21–32 yrs</td>
+          <td>Prelim → Main (8 papers) → PT</td>
+          <td>1600 (Main)</td>
+          <td><span class="noneg">None</span></td>
+          <td>—</td>
+        </tr>
+        <tr data-cat="state">
+          <td><strong>WB Judicial Service</strong></td>
+          <td>WBPSC</td>
+          <td><span class="tag-s">State WB</span></td>
+          <td>LLB (implied)</td>
+          <td>As per rules</td>
+          <td>Prelim → Final → PT</td>
+          <td>—</td>
+          <td><span class="noneg">None</span></td>
+          <td>—</td>
+        </tr>
+        <tr data-cat="state">
+          <td><strong>WB Audit &amp; Accounts</strong></td>
+          <td>WBPSC</td>
+          <td><span class="tag-s">State WB</span></td>
+          <td>B.Com / CA / ICWA + Bengali</td>
+          <td>≤ 32 yrs</td>
+          <td>Prelim → Main → PT</td>
+          <td>—</td>
+          <td><span class="noneg">None</span></td>
+          <td>₹8,000–₹13,500</td>
+        </tr>
+        <tr data-cat="state">
+          <td><strong>Sub-Inspector / Sergeant</strong></td>
+          <td>WBPSC</td>
+          <td><span class="tag-s">State WB</span></td>
+          <td>Not specified</td>
+          <td>As per rules</td>
+          <td>Prelim → Final → PT (30M)</td>
+          <td>430 (200+200+30)</td>
+          <td><span class="noneg">None</span></td>
+          <td>₹4,500–₹9,700</td>
+        </tr>
+        <tr data-cat="state">
+          <td><strong>School Service (WBSSC)</strong></td>
+          <td>WBSSC</td>
+          <td><span class="tag-s">State WB</span></td>
+          <td>Bachelor's / Hons / PG (subject-specific)</td>
+          <td>20–40 yrs</td>
+          <td>Written → Interview</td>
+          <td>—</td>
+          <td><span class="noneg">None</span></td>
+          <td>—</td>
+        </tr>
+        <tr data-cat="central">
+          <td><strong>SSC Matric Level</strong></td>
+          <td>SSC</td>
+          <td><span class="tag-c">Central</span></td>
+          <td>Matriculation / 10th pass</td>
+          <td>18–27 yrs</td>
+          <td>Prelim (200M) → Main → Skill Test</td>
+          <td>Prelim 200 + Main 200 + Skill</td>
+          <td><span class="noneg">None</span></td>
+          <td>—</td>
+        </tr>
+        <tr data-cat="central">
+          <td><strong>SSC Graduate Level</strong></td>
+          <td>SSC</td>
+          <td><span class="tag-c">Central</span></td>
+          <td>Graduate degree</td>
+          <td>Post-specific</td>
+          <td>Prelim → Main</td>
+          <td>—</td>
+          <td><span class="noneg">None</span></td>
+          <td>—</td>
+        </tr>
+        <tr data-cat="central">
+          <td><strong>UPSC Civil Services</strong></td>
+          <td>UPSC</td>
+          <td><span class="tag-c">Central</span></td>
+          <td>Any degree</td>
+          <td>21–30 yrs (SC/ST +5, OBC +3)</td>
+          <td>Prelim (CSAT) → Main (9 papers) → Interview</td>
+          <td>Very high (Main + Interview)</td>
+          <td><span class="noneg">None stated</span></td>
+          <td>Senior IAS/IPS scales</td>
+        </tr>
+        <tr data-cat="central">
+          <td><strong>UPSC IFS</strong></td>
+          <td>UPSC</td>
+          <td><span class="tag-c">Central</span></td>
+          <td>BSc (specific) / Agri / Forestry / Engg</td>
+          <td>21–30 yrs (SC/ST +5)</td>
+          <td>Written (5 papers, 1400M) → Interview (300M)</td>
+          <td>1700 (1400 + 300)</td>
+          <td><span class="noneg">None stated</span></td>
+          <td>All India Class-I</td>
+        </tr>
+        <tr data-cat="banking">
+          <td><strong>IBPS Clerical (CWE)</strong></td>
+          <td>IBPS</td>
+          <td><span class="tag-b">Banking</span></td>
+          <td>60% Matric / 50% HSC / Any Degree</td>
+          <td>18–28 yrs (SC/ST +5, OBC +3, PWD +10)</td>
+          <td>CWE (250Q, 250M, 150 min)</td>
+          <td>250</td>
+          <td><span class="neg">Yes – ¼ per wrong</span></td>
+          <td>Bank clerk scales</td>
+        </tr>
+        <tr data-cat="banking">
+          <td><strong>IBPS PO (CWE)</strong></td>
+          <td>IBPS</td>
+          <td><span class="tag-b">Banking</span></td>
+          <td>Any degree</td>
+          <td>20–30 yrs</td>
+          <td>CWE (275M: 250 obj + 25 desc) → GD/Interview</td>
+          <td>275 + GD/Interview</td>
+          <td><span class="neg">Yes – ¼ per wrong</span></td>
+          <td>Bank officer scales</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+function toggleDetails(btn){
+  var d=btn.nextElementSibling;
+  d.classList.toggle('open');
+  btn.textContent=d.classList.contains('open')?'▲ Hide Details':'▼ Exam Details';
+}
+
+var currentFilter='all';
+var currentView='cards';
+
+function filter(cat,btn){
+  currentFilter=cat;
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilter();
+}
+
+function applyFilter(){
+  var cat=currentFilter;
+  // cards
+  document.querySelectorAll('#cards-view .card').forEach(function(c){
+    var dc=c.getAttribute('data-cat');
+    c.classList.toggle('hidden',cat!=='all'&&dc!==cat);
+  });
+  // table rows
+  document.querySelectorAll('#cmp-table tbody tr').forEach(function(r){
+    var dc=r.getAttribute('data-cat');
+    r.classList.toggle('hidden',cat!=='all'&&dc!==cat);
+  });
+}
+
+function setView(v){
+  currentView=v;
+  document.getElementById('cards-view').style.display=v==='cards'?'grid':'none';
+  var tw=document.getElementById('table-view');
+  tw.classList.toggle('show',v==='table');
+  document.getElementById('vb-cards').classList.toggle('active',v==='cards');
+  document.getElementById('vb-table').classList.toggle('active',v==='table');
+}
+</script>
+</body>
+</html>
